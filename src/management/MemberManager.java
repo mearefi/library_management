@@ -1,30 +1,49 @@
 package management;
 
+import datastructures.maps.CustomHashMap;
 import library.Member;
 import library.Transaction;
 
 public class MemberManager {
-    // TODO: Define a data structure that stores memberIds and their matching member objects
+    private CustomHashMap<String, Member> members;
 
     public MemberManager() {
-        // TODO: Initialize your data structure here
+        this.members = new CustomHashMap<>();
     }
 
     public void addMember(Member member) {
-        // TODO: Add member and their id to your data structure
+        if (member == null) {
+            throw new IllegalArgumentException("Member is null");
+        }
+        members.put(member.getMemberId(), member);
     }
 
     public Member getMember(String memberId) {
-        // TODO
-        return null;
+        if (memberId == null) {
+            throw new IllegalArgumentException("Memberid is null");
+        }
+        return members.get(memberId);
     }
 
     public void recordTransaction(String memberId, Transaction transaction) {
-        // TODO
+        if (transaction == null) {
+            throw new IllegalArgumentException("Transaction is null");
+        }
+        Member member = getMember(memberId);
+        if (member == null) {
+            throw new IllegalArgumentException("Can not find member:" + memberId);
+        }
+        member.addTransaction(transaction);
     }
 
     public Transaction getLastTransaction(String memberId) {
-        // TODO
-        return null;
+        if (memberId == null) {
+            throw new IllegalArgumentException("Memberid is null");
+        }
+        Member member = getMember(memberId);
+        if (member == null) {
+            throw new IllegalArgumentException("Can not find member: " + memberId);
+        }
+        return member.getLastTransaction();
     }
 }
