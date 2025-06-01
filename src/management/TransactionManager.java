@@ -3,31 +3,35 @@ package management;
 import library.Book;
 import library.Member;
 import library.Transaction;
+import datastructures.lists.CustomArrayList;
+import datastructures.interfaces.List;
 
 import java.util.Date;
 
 public class TransactionManager {
-    // TODO: Define a data structure that stores transactions
+    private List<Transaction> transactionLog;
 
     public TransactionManager() {
-        // TODO: Initialize your data structure here
+        this.transactionLog = new CustomArrayList<>();
     }
 
     public Transaction addTransaction(String bookTitle, String memberName, String type) {
-
         Transaction transaction = new Transaction(
-                "TXN-" + new Date().getTime(),
+                "TXN-" + new Date().getTime() + "-" + transactionLog.size(),
                 bookTitle,
                 memberName,
                 type
         );
-
-        // TODO: Add the transaction to your data structure
+        transactionLog.add(transaction);
+        System.out.println("Transaction recorded: " + type + " - Book: " + bookTitle + " by " + memberName);
         return transaction;
     }
 
     public Transaction getTransactionByIndex(int index) {
-        // TODO:
+        if (index >= 0 && index < transactionLog.size()) {
+            return transactionLog.get(index);
+        }
+        System.out.println("Error: Transaction index " + index + " out of bounds.");
         return null;
     }
 }
