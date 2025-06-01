@@ -1,6 +1,8 @@
 package datastructures.interfaces;
 
-public interface LinkedList<T> extends List{
+import java.util.NoSuchElementException;
+
+public interface LinkedList<T> extends List<T> {
     void addFirst(T t);
     void addLast(T t);
     T removeFirst();
