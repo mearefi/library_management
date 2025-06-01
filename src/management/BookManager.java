@@ -1,47 +1,78 @@
 package management;
 
+import datastructures.maps.CustomHashMap;
 import library.Book;
 import library.Member;
 
 public class BookManager {
-    // TODO: Define a data structure that stores ISBNs and their matching Book objects
-
+    private CustomHashMap<String, Book> books;
     private MemberManager memberManager;
 
     public BookManager(MemberManager memberManager) {
-        // TODO: Initialize your data structure here
+        this.books = new CustomHashMap<>();
         this.memberManager = memberManager;
     }
 
     public void addBook(Book book) {
-        // TODO: Add the book and its ISBN to your data structure
+        if (book == null) {
+            throw new IllegalArgumentException("Book field is null");
+        }
+        books.put(book.getIsbn(), book);
     }
 
     public Book getBookByIsbn(String isbn) {
-        // TODO
-        return null;
+        if (isbn == null) {
+            throw new IllegalArgumentException("ISBN field is null");
+        }
+        return books.get(isbn);
     }
 
     public boolean isBookAvailable(String isbn) {
-        // TODO
-        return false;
+        Book book = getBookByIsbn(isbn);
+        if (book != null) {
+            return book.isAvailable();
+        } else {
+            throw new IllegalArgumentException(isbn + " not found");
+        }
     }
 
     public void setBookAvailability(String isbn, boolean available) {
-        // TODO
+        Book book = getBookByIsbn(isbn);
+        if (book != null) {
+            book.setAvailable(available);
+        } else {
+            throw new IllegalArgumentException(isbn + " not found");
+        }
     }
 
     public void addToWaitlist(String isbn, String memberId) {
-        // TODO
+        Book book = getBookByIsbn(isbn);
+        if (book == null) {
+            throw new IllegalArgumentException("Book " + isbn + " not found");
+        }
+
+        Member member = memberManager.getMember(memberId);
+        if (member == null) {
+            throw new IllegalArgumentException("Member " + memberId + " not found");
+        }
+
+        book.addToWaitlist(member); // Now passing Member object
     }
 
-    public Member getNextFromWaitlist(String isbn) {
-        // TODO
-        return null;
+    public Member getNextFromWaitlist(String isbn) { // Changed return type to Member
+        Book book = getBookByIsbn(isbn);
+        if (book == null) {
+            throw new IllegalArgumentException("Book " + isbn + " not found");
+        }
+        return book.getNextInWaitlist(); // Returns Member object
     }
 
     public boolean hasWaitlist(String isbn) {
-        // TODO
-        return false;
+        Book book = getBookByIsbn(isbn);
+        if (book != null) {
+           return book.hasWaitlist();
+        } else {
+            throw new IllegalArgumentException("Book" + isbn + " not found");
+        }
     }
 }
